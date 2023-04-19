@@ -8,12 +8,9 @@
 [Project](https://inbarhub.github.io/DDPM_inversion/) | [Arxiv](https://arxiv.org/abs/2304.06140) | [Supplementary materials](https://inbarhub.github.io/DDPM_inversion/resources/inversion_supp.pdf)
 ### Official pytorch implementation of the paper: <br>"An Edit Friendly DDPM Noise Space: Inversion and Manipulations"
 
-
-## Random Samples from a Single Example
-With SinDDM, one can train a generative model from a single natural image, and then generate random samples from the given image, for example:
-
 ![](img/teaser.jpg)
-
+Our inversion can be used for text-based editing of real images, either by itself or in combination with other editing methods.
+Due to the stochastic manner of our method, we can generate diverse outputs, a feature that is not naturally available with methods relying on the DDIM inversion.
 
 ## SinDDM's Applications
 SinDDM can also be used for a line of image manipulation tasks, especially image manipluations guided by text, for example:
