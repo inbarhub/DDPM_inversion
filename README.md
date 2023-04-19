@@ -12,7 +12,7 @@
 ## Random Samples from a Single Example
 With SinDDM, one can train a generative model from a single natural image, and then generate random samples from the given image, for example:
 
-![](imgs/teaser.jpg)
+![](img/teaser.jpg)
 
 
 ## SinDDM's Applications
