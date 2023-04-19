@@ -12,6 +12,8 @@
 Our inversion can be used for text-based editing of real images, either by itself or in combination with other editing methods.
 Due to the stochastic manner of our method, we can generate diverse outputs, a feature that is not naturally available with methods relying on the DDIM inversion.
 
+In this repository we support in editing via our inversion, p2p+our inversion, ddim or p2p (with ddim inversion).
+
 ## Table of Contents
 * [Requirements](#Requirements)
 * [Repository Structure](#Repository-Structure)
@@ -19,8 +21,6 @@ Due to the stochastic manner of our method, we can generate diverse outputs, a f
 * [Data and Pretrained Models](#Data-and-Pretrained-Models)
 * [Sources](#Sources)
 * [Citation](#Citation)
-
-
 
 ## Requirements 
 
@@ -41,7 +41,8 @@ This code was tested with python 3.8 and torch 1.13.
 A folder names 'results' will be automatically created and all the restuls will be saved to this folder, marked with a timestamp.
 
 ## Usage Examples 
-**Note: This is an early code release which provides full functionality, but is not yet fully organized or optimized. We will be extensively updating this repository in the coming weeks.** 
+The test.yaml file contains images to be edited along with their source and targett prompts.
+
 
 ###  Train
 To train a SinDDM model on your own image e.g. `<training_image.png>`, put the desired training image under `./datasets/<training_image>/`, and run

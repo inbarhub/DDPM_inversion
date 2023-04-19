@@ -16,11 +16,11 @@ import time
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--device_num", type=int, default=2)
-    parser.add_argument("--cfg_enc", type=float, default=3.5)
-    parser.add_argument("--cfg_dec", type=float, default=[15])
+    parser.add_argument("--cfg_src", type=float, default=3.5)
+    parser.add_argument("--cfg_tar", type=float, default=[15])
     parser.add_argument("--num_diffusion_steps", type=int, default=100)
-    parser.add_argument("--prompt_enc",  default="a photo of a horse in the mud")
-    parser.add_argument("--prompt_dec",  default="a photo of a horse in the snow")
+    parser.add_argument("--prompt_src",  default="a photo of a horse in the mud")
+    parser.add_argument("--prompt_tar",  default="a photo of a horse in the snow")
     parser.add_argument("--dataset_yaml",  default="test.yaml")
     parser.add_argument("--img_name",  default="example_image/horse_mud.jpg")
     parser.add_argument("--eta", type=float, default=1)
@@ -39,8 +39,8 @@ if __name__ == "__main__":
 
     device = f"cuda:{args.device_num}"
 
-    cfg_scale_enc = args.cfg_enc
-    cfg_scale_dec_list = args.cfg_dec
+    cfg_scale_src = args.cfg_src
+    cfg_scale_tar_list = args.cfg_tar
     eta = args.eta # = 1
     skip_zs=args.skip
     xa_sa_string = f'_xa_{args.xa}_sa{args.sa}_' if args.mode=='p2pinv' else '_'
@@ -53,8 +53,8 @@ if __name__ == "__main__":
         image_path = current_image_data['init_img']
         image_path = '.' + image_path 
         image_folder = image_path.split('/')[1] # after '.'
-        prompt_enc = current_image_data.get('source_prompt', "") # default empty string
-        prompt_dec_list = current_image_data['target_prompts']
+        prompt_src = current_image_data.get('source_prompt', "") # default empty string
+        prompt_tar_list = current_image_data['target_prompts']
 
         # load/reload model:
         ldm_stable = StableDiffusionPipeline.from_pretrained(model_id).to(device)
@@ -77,32 +77,32 @@ if __name__ == "__main__":
 
         # find Zs and wts - forward process
         if args.mode=="p2pddim" or args.mode=="ddim":
-            wT = ddim_inversion(ldm_stable, w0, prompt_enc, cfg_scale_enc)
+            wT = ddim_inversion(ldm_stable, w0, prompt_src, cfg_scale_src)
         else:
-            wt, zs, wts = inversion_forward_process(ldm_stable, w0, etas=eta, prompt=prompt_enc, cfg_scale=cfg_scale_enc, prog_bar=True, num_inference_steps=args.num_diffusion_steps)
+            wt, zs, wts = inversion_forward_process(ldm_stable, w0, etas=eta, prompt=prompt_src, cfg_scale=cfg_scale_src, prog_bar=True, num_inference_steps=args.num_diffusion_steps)
 
         # iterate over decoder prompts
-        for k in range(len(prompt_dec_list)):
-            prompt_dec = prompt_dec_list[k]
-            save_path = os.path.join(f'./results_{args.num_diffusion_steps}/', args.mode+xa_sa_string+str(time_stamp), image_path.split(sep='.')[0], 'enc_' + prompt_enc.replace(" ", "_"), 'dec_' + prompt_dec.replace(" ", "_"))
+        for k in range(len(prompt_tar_list)):
+            prompt_tar = prompt_tar_list[k]
+            save_path = os.path.join(f'./results_{args.num_diffusion_steps}/', args.mode+xa_sa_string+str(time_stamp), image_path.split(sep='.')[0], 'src_' + prompt_src.replace(" ", "_"), 'dec_' + prompt_tar.replace(" ", "_"))
             os.makedirs(save_path, exist_ok=True)
 
             # Check if number of words in encoder and decoder text are equal
-            enc_dec_len_eq = (len(prompt_enc.split(" ")) == len(prompt_dec.split(" ")))
+            src_tar_len_eq = (len(prompt_src.split(" ")) == len(prompt_tar.split(" ")))
 
-            for cfg_scale_dec in cfg_scale_dec_list:
+            for cfg_scale_tar in cfg_scale_tar_list:
                 for skip in skip_zs:    
                     if args.mode=="our_inv":
                         # reverse process (via Zs and wT)
                         controller = AttentionStore()
                         register_attention_control(ldm_stable, controller)
-                        w0, _ = inversion_reverse_process(ldm_stable, xT=wts[skip], etas=eta, prompts=[prompt_dec], cfg_scales=[cfg_scale_dec], prog_bar=True, zs=zs[skip:], controller=controller)
+                        w0, _ = inversion_reverse_process(ldm_stable, xT=wts[skip], etas=eta, prompts=[prompt_tar], cfg_scales=[cfg_scale_tar], prog_bar=True, zs=zs[skip:], controller=controller)
 
                     elif args.mode=="p2pinv":
                         # inversion with attention replace
-                        cfg_scale_list = [cfg_scale_enc, cfg_scale_dec]
-                        prompts = [prompt_enc, prompt_dec]
-                        if enc_dec_len_eq:
+                        cfg_scale_list = [cfg_scale_src, cfg_scale_tar]
+                        prompts = [prompt_src, prompt_tar]
+                        if src_tar_len_eq:
                             controller = AttentionReplace(prompts, args.num_diffusion_steps, cross_replace_steps=args.xa, self_replace_steps=args.sa, model=ldm_stable)
                         else:
                             # Should use Refine for target prompts with different number of tokens
@@ -116,9 +116,9 @@ if __name__ == "__main__":
                         # only z=0
                         if skip != 0:
                             continue
-                        prompts = [prompt_enc, prompt_dec]
+                        prompts = [prompt_src, prompt_tar]
                         if args.mode=="p2pddim":
-                            if enc_dec_len_eq:
+                            if src_tar_len_eq:
                                 controller = AttentionReplace(prompts, args.num_diffusion_steps, cross_replace_steps=.8, self_replace_steps=0.4, model=ldm_stable)
                             # Should use Refine for target prompts with different number of tokens
                             else:
@@ -128,7 +128,7 @@ if __name__ == "__main__":
 
                         register_attention_control(ldm_stable, controller)
                         # perform ddim inversion
-                        cfg_scale_list = [cfg_scale_enc, cfg_scale_dec]
+                        cfg_scale_list = [cfg_scale_src, cfg_scale_tar]
                         w0, latent = text2image_ldm_stable(ldm_stable, prompts, controller, args.num_diffusion_steps, cfg_scale_list, None, wT)
                         w0 = w0[1:2]
                     else:
@@ -144,7 +144,7 @@ if __name__ == "__main__":
                     # same output
                     current_GMT = time.gmtime()
                     time_stamp_name = calendar.timegm(current_GMT)
-                    image_name_png = f'cfg_d_{cfg_scale_dec}_' + f'skip_{skip}_{time_stamp_name}' + ".png"
+                    image_name_png = f'cfg_d_{cfg_scale_tar}_' + f'skip_{skip}_{time_stamp_name}' + ".png"
 
                     save_full_path = os.path.join(save_path, image_name_png)
                     img.save(save_full_path)
