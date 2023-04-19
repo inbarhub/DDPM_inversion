@@ -1,5 +1,0 @@
-diffusers==0.8.0
-transformers
-ftfy
-opencv-python
-ipywidgets
