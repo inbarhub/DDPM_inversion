@@ -34,7 +34,6 @@ def pil_to_tensor(pil_imgs):
     return tensor_imgs
 
 
-
 ## TODO implement this
 # n = 10
 # num_rows = 4
@@ -106,81 +105,6 @@ def load_dataset(input_folder):
         filenames = [f for f in filenames if not f[0] == '.']
         file_names.append(filenames)
     return class_names, file_names
-
-
-def create_prompts_from_class(class_name):
-    enc_prompt = f'a photo of a {class_name}'
-    if class_name=='penguin':
-        dec_prompts = [f'an embroidery of a {class_name}',
-                    f'a video-game of a {class_name}',
-                    f'a tattoo of a {class_name}',
-                    f'a photo of a bustard',
-                    f'a pattern of a crane',]
-        
-    if class_name=='husky':
-        dec_prompts = ['a pattern of a husky',
-                    'a tattoo of a husky',
-                    'a toy of a husky',
-                    'a graffiti of a poodle',
-                    'an embroidery of a cat',]
-        
-    if class_name=='goldfish':
-        dec_prompts = ['a graffiti of a goldfish',
-                    'an origami of a goldfish',
-                    'a photo of a goldfish',
-                    'a tattoo of a parrotfish',
-                    'an embroidery of a tuna',]
-        
-    if class_name=='cat':
-        dec_prompts = ['a pattern of a cat',
-                    'a graffiti of a cat',
-                    'a toy of a cat',
-                    'an origami of a poodle',
-                    'an embroidery of a bear',]   
-             
-    if class_name=='jeep':
-        dec_prompts = ['a graffiti of a jeep',
-                    'an image of a jeep',
-                    'a tattoo of a jeep',
-                    'a cartoon of a pickup',
-                    'a deviantart of a tractor',]     
-
-    if class_name=='castle':
-        dec_prompts = ['an image of a castle',
-                    'a sculpture of a castle',
-                    'a tattoo of a castle',
-                    'an embroidery of a temple',
-                    'a photo of a church',]  
-
-    if class_name=='pizza':
-        dec_prompts = ['a tattoo of a pizza',
-                    'a cartoon of a pizza',
-                    'a graffiti of a pizza',
-                    'an image of a baloon',
-                    'an embroidery of a cake',]  
-
-    if class_name=='violin':
-        dec_prompts = ['a video-game of a violin',
-                    'a sculpture of a violin',
-                    'a toy of a violin',
-                    'an embroidery of a viola',
-                    'a pattern of a cello',]  
-
-    if class_name=='panda':
-        dec_prompts = ['a toy of a panda',
-                    'a tattoo of a panda',
-                    'an origami of a panda',
-                    'an embroidery of a bear',
-                    'a graffiti of a leopard',]  
-
-    if class_name=='hummingbird':
-        dec_prompts = ['an art of a hummingbird',
-                    'a video-game of a hummingbird',
-                    'a toy of a hummingbird',
-                    'a deviantart of a pigeon',
-                    'a graffiti of an egret',] 
-
-    return enc_prompt, dec_prompts
 
 
 def dataset_from_yaml(yaml_location):

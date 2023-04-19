@@ -3,5 +3,4 @@
     source_prompt: a photo of a horse in the mud
 
     target_prompts:
-    # - a photo of a horse in the snow 
-    - a photo of a horse in the mud
+    - a photo of a horse in the snow 
