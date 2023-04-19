@@ -12,17 +12,14 @@
 Our inversion can be used for text-based editing of real images, either by itself or in combination with other editing methods.
 Due to the stochastic manner of our method, we can generate diverse outputs, a feature that is not naturally available with methods relying on the DDIM inversion.
 
-
-
 ## Table of Contents
-* [Random Samples from a Single Example](#Random-Samples-from-a-Single-Example)
-* [SinDDM's Applications](#SinDDMs-Applications)
-* [Citation](#Citation)
 * [Requirements](#Requirements)
 * [Repository Structure](#Repository-Structure)
 * [Usage Examples](#Usage-Examples)
 * [Data and Pretrained Models](#Data-and-Pretrained-Models)
 * [Sources](#Sources)
+* [Citation](#Citation)
+
 
 
 ## Requirements 
@@ -34,14 +31,14 @@ This code was tested with python 3.8 and torch 1.13.
 
 ## Repository Structure 
 ```
-├── SinDDM - training and inference code   
-├── clip - clip model code
-├── datasets - the images used in the paper
+├── example_images - folder of input images to be edited
 ├── imgs - images used in this repository readme.md file
-├── results - pre-trained models 
-├── text2live_util - code for editing via text, based on text2live code 
-└── main.py - main python file for initiate model training and for model inference 
+├── prompt_to_prompt - p2p code (contains our inversion)
+├── main_run.py - main python file for running the method
+└── test.yaml - yaml file contains images and prompt to run
 ```
+
+A folder names 'results' will be automatically created and all the restuls will be saved to this folder, marked with a timestamp.
 
 ## Usage Examples 
 **Note: This is an early code release which provides full functionality, but is not yet fully organized or optimized. We will be extensively updating this repository in the coming weeks.** 
