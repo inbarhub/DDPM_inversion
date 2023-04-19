@@ -1,27 +1,14 @@
 import argparse
-import torch
 from diffusers import StableDiffusionPipeline
 from diffusers import DDIMScheduler
 import os
-from prompt_to_prompt.ptp_classes import AttentionStore, AttentionReplace, AttentionRefine, EmptyControl
+from prompt_to_prompt.ptp_classes import AttentionStore, AttentionReplace, AttentionRefine, EmptyControl,load_512
 from prompt_to_prompt.ptp_utils import register_attention_control, text2image_ldm_stable, view_images
-from prompt_to_prompt.ptp_classes import show_cross_attention
-from prompt_to_prompt.ptp_classes import load_512
-
-# NUM_DIFFUSION_STEPS = 2
-
-
-from prompt_to_prompt.inversion_utils import load_real_image, inversion_forward_process, inversion_reverse_process
-from prompt_to_prompt.utils import image_grid
-import diffusers
+from prompt_to_prompt.inversion_utils import  inversion_forward_process, inversion_reverse_process
+from prompt_to_prompt.utils import image_grid,dataset_from_yaml
 
 from torch import autocast, inference_mode
 from prompt_to_prompt.ddim_inversion import ddim_inversion
-
-from prompt_to_prompt.utils import load_dataset, create_prompts_from_class, dataset_from_yaml
-
-
-import openpyxl
 
 import calendar
 import time
@@ -32,17 +19,16 @@ if __name__ == "__main__":
     parser.add_argument("--cfg_enc", type=float, default=3.5)
     parser.add_argument("--cfg_dec", type=float, default=[15])
     parser.add_argument("--num_diffusion_steps", type=int, default=100)
-    parser.add_argument("--prompt_enc",  default="a cat sitting next to a mirror")
-    parser.add_argument("--prompt_dec",  default="a tiger sitting next to a mirror")
+    parser.add_argument("--prompt_enc",  default="a photo of a horse in the mud")
+    parser.add_argument("--prompt_dec",  default="a photo of a horse in the snow")
     parser.add_argument("--dataset_yaml",  default="test.yaml")
-    parser.add_argument("--img_name",  default="example_image/gnochi_mirror.jpeg")
+    parser.add_argument("--img_name",  default="example_image/horse_mud.jpg")
     parser.add_argument("--eta", type=float, default=1)
-    parser.add_argument("--mode",  default="p2pinv", help="modes: our_inv,p2pinv,p2pddim, ddim")
-    parser.add_argument("--skip",  type=int, default=[36])
+    parser.add_argument("--mode",  default="our_inv", help="modes: our_inv,p2pinv,p2pddim, ddim")
+    parser.add_argument("--skip",  type=int, default=[0])
     parser.add_argument("--xa", type=float, default=0.6)
     parser.add_argument("--sa", type=float, default=0.2)
     
-
     args = parser.parse_args()
     full_data = dataset_from_yaml(args.dataset_yaml)
 
@@ -55,10 +41,9 @@ if __name__ == "__main__":
 
     cfg_scale_enc = args.cfg_enc
     cfg_scale_dec_list = args.cfg_dec
-    eta = args.eta #1
+    eta = args.eta # = 1
     skip_zs=args.skip
     xa_sa_string = f'_xa_{args.xa}_sa{args.sa}_' if args.mode=='p2pinv' else '_'
-
 
     current_GMT = time.gmtime()
     time_stamp = calendar.timegm(current_GMT)
@@ -109,9 +94,9 @@ if __name__ == "__main__":
                 for skip in skip_zs:    
                     if args.mode=="our_inv":
                         # reverse process (via Zs and wT)
-                        controller_store = AttentionStore()
-                        register_attention_control(ldm_stable, controller_store)
-                        w0, _ = inversion_reverse_process(ldm_stable, xT=wts[skip], etas=eta, prompts=[prompt_dec], cfg_scales=[cfg_scale_dec], prog_bar=True, zs=zs[skip:], controller=controller_store)
+                        controller = AttentionStore()
+                        register_attention_control(ldm_stable, controller)
+                        w0, _ = inversion_reverse_process(ldm_stable, xT=wts[skip], etas=eta, prompts=[prompt_dec], cfg_scales=[cfg_scale_dec], prog_bar=True, zs=zs[skip:], controller=controller)
 
                     elif args.mode=="p2pinv":
                         # inversion with attention replace
@@ -120,12 +105,13 @@ if __name__ == "__main__":
                         if enc_dec_len_eq:
                             controller = AttentionReplace(prompts, args.num_diffusion_steps, cross_replace_steps=args.xa, self_replace_steps=args.sa, model=ldm_stable)
                         else:
-                        # Should use Refine for target prompts with different number of tokens
+                            # Should use Refine for target prompts with different number of tokens
                             controller = AttentionRefine(prompts, args.num_diffusion_steps, cross_replace_steps=args.xa, self_replace_steps=args.sa, model=ldm_stable)
 
                         register_attention_control(ldm_stable, controller)
                         w0, _ = inversion_reverse_process(ldm_stable, xT=wts[skip], etas=eta, prompts=prompts, cfg_scales=cfg_scale_list, prog_bar=True, zs=zs[skip:], controller=controller)
                         w0 = w0[1].unsqueeze(0)
+
                     elif args.mode=="p2pddim" or args.mode=="ddim":
                         # only z=0
                         if skip != 0:
@@ -143,7 +129,8 @@ if __name__ == "__main__":
                         register_attention_control(ldm_stable, controller)
                         # perform ddim inversion
                         cfg_scale_list = [cfg_scale_enc, cfg_scale_dec]
-                        w0, latent = text2image_ldm_stable(ldm_stable, prompts, controller, args.num_diffusion_steps, cfg_scale_list, None, wT)[1]
+                        w0, latent = text2image_ldm_stable(ldm_stable, prompts, controller, args.num_diffusion_steps, cfg_scale_list, None, wT)
+                        w0 = w0[1:2]
                     else:
                         raise NotImplementedError
                     
@@ -163,9 +150,9 @@ if __name__ == "__main__":
                     img.save(save_full_path)
 
 # TODO: Vova:
-# (1) check automatically refine or replace
-# (2) change model to upload from interent and not local
-# (3) requrement file
+# (1) requrement file
 # TODO: Inbar:
 # (1) fix Rene's bug
 # (2) write more concisly the inversion_util
+# (3) Comments
+# (4) change gpu=0
