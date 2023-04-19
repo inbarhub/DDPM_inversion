@@ -1,9 +1,9 @@
-[![Single_Image_Generative_Model](https://img.shields.io/badge/single%20image-generative%20model-yellow)](https://github.com/topics/single-image-generation)
+<!-- [![DDPM inversion](https://img.shields.io/badge/single%20image-generative%20model-yellow)](https://github.com/topics/single-image-generation) -->
 [![Python 3.8](https://img.shields.io/badge/python-3.812+-blue)](https://www.python.org/downloads/release/python-38/)
 [![torch](https://img.shields.io/badge/torch-1.13.0+-green)](https://pytorch.org/)
 
 
-# SinDDM
+# DDPM_inversion
 
 [Project](https://matankleiner.github.io/sinddm/) | [Arxiv](https://arxiv.org/pdf/2211.16582.pdf) | [Supplementary materials](https://matankleiner.github.io/sinddm/resources/sinddm_supp.pdf)
 ### Official pytorch implementation of the paper: "SinDDM: A Single Image Denoising Diffusion Model"
