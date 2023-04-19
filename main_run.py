@@ -151,6 +151,7 @@ if __name__ == "__main__":
 
 # TODO: Vova:
 # (1) requrement file
+# (2) where to put .gitignore
 # TODO: Inbar:
 # (1) fix Rene's bug
 # (2) write more concisly the inversion_util
