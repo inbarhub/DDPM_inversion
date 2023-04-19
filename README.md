@@ -12,25 +12,7 @@
 Our inversion can be used for text-based editing of real images, either by itself or in combination with other editing methods.
 Due to the stochastic manner of our method, we can generate diverse outputs, a feature that is not naturally available with methods relying on the DDIM inversion.
 
-## SinDDM's Applications
-SinDDM can also be used for a line of image manipulation tasks, especially image manipluations guided by text, for example:
- ![](imgs/text_guidance.png)
 
-
-See section 4 in our [paper](https://arxiv.org/pdf/2211.16582.pdf) for more details about our results and experiments.
-
-
-### Citation
-If you use this code for your research, please cite our paper:
-
-```
-@article{kulikov2022sinddm,
-  title      = {SinDDM: A Single Image Denoising Diffusion Model},
-  author     = {Kulikov, Vladimir and Yadin, Shahar and Kleiner, Matan and Michaeli, Tomer},
-  journal    = {arXiv preprint arXiv:2211.16582},
-  year       = {2022}
-}
-```
 
 ## Table of Contents
 * [Random Samples from a Single Example](#Random-Samples-from-a-Single-Example)
@@ -158,3 +140,16 @@ The DDPM code was adapted from the following [pytorch implementation of DDPM](ht
 
 The modified CLIP model as well as most of the code in `./text2live_util/` directory was taken from the [official Text2live repository](https://github.com/omerbt/Text2LIVE). 
  
+
+
+### Citation
+If you use this code for your research, please cite our paper:
+
+```
+@article{HubermanSpiegelglas2023,
+  title      = {An Edit Friendly DDPM Noise Space: Inversion and Manipulations},
+  author     = {Huberman-Spiegelglas, Inbar and Kulikov, Vladimir and Michaeli, Tomer},
+  journal    = {arXiv preprint arXiv:2304.06140},
+  year       = {2023}
+}
+```
