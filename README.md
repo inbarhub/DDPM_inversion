@@ -6,7 +6,7 @@
 # DDPM_inversion
 
 [Project](https://inbarhub.github.io/DDPM_inversion/) | [Arxiv](https://arxiv.org/abs/2304.06140) | [Supplementary materials](https://inbarhub.github.io/DDPM_inversion/resources/inversion_supp.pdf)
-### Official pytorch implementation of the paper: "An Edit Friendly DDPM Noise Space: Inversion and Manipulations"
+### Official pytorch implementation of the paper: <br>"An Edit Friendly DDPM Noise Space: Inversion and Manipulations"
 
 
 ## Random Samples from a Single Example
