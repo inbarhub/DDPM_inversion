@@ -26,7 +26,9 @@ In this repository we support editing using our inversion, prompt-to-prompt (p2p
 ## Table of Contents
 * [Requirements](#Requirements)
 * [Repository Structure](#Repository-Structure)
+* [Algorithm Inputs and Parameters](#Algorithm-Inputs-and-Parameters)
 * [Usage Example](#Usage-Example)
+
 * [Citation](#Citation)
 
 ## Requirements 
@@ -48,7 +50,7 @@ This code was tested with python 3.8 and torch 2.0.0.
 
 A folder named 'results' will be automatically created and all the results will be saved to this folder. We also add a timestamp to the saved images in this folder.
 
-## Algorithm Inputs and parameters
+## Algorithm Inputs and Parameters
 Method's inputs: 
 ```
 init_img - the path to the input images
