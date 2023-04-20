@@ -15,7 +15,7 @@ import time
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--device_num", type=int, default=2)
+    parser.add_argument("--device_num", type=int, default=0)
     parser.add_argument("--cfg_src", type=float, default=3.5)
     parser.add_argument("--cfg_tar", type=float, default=[15])
     parser.add_argument("--num_diffusion_steps", type=int, default=100)
@@ -146,7 +146,3 @@ if __name__ == "__main__":
                     save_full_path = os.path.join(save_path, image_name_png)
                     img.save(save_full_path)
 
-# TODO: Inbar:
-# (1) fix Rene's bug
-# (2) write more concisly the inversion_util
-# (3) Comments
