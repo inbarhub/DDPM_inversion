@@ -43,28 +43,41 @@ A folder named 'results' will be automatically created and all the restuls will 
 ## Algorithm Inputs
 The parameters of the method are: 
 ```
-skip - parametercontrolling the adherence to the input image
-cfg_tar - the strength of the classifierfree guidance
+skip - controlling the adherence to the input image
+cfg_tar - the strength of the classifier free guidance
 ```
-Moreover, in order to run the method needs an input image ('''img_name''') and source and target prompts ('''prompt_src''' and '''prompt_tar'''). These three parameters can be given also in the test.yaml file intead.
+Moreover, we should supply also an input image (img_name) and source and target prompts (prompt_src and prompt_tar). These three parameters can be given also in the test.yaml file.
 
-All these parameters have default values.
-
-```
-├── cfg_tar - classifier free guidance
-├── dataset_yaml - the yaml location contains input images locations, source and target prompts
-├── mode - 
-├── skip - 
-└── test.yaml - yaml file contains images and prompt to run
-```
-There are more variables, such as num_diffusion_steps which is the number of inference step that you can play with.
-All these inputs have default parameters in main_run.py. You can run with your own parameters, we can be seen next.
+All parameters have default values.
 
 ## Usage Examples 
-## Our inversio
-The test.yaml file contains images to be edited along with their source prompt and target prompts. The main.py has default argument
-## p2p+our invserion
+## Our inversion
+```
+python3 main_run.py --mode="our_inv" --img_name="example_images/horse_mud.jpg" --prompt_src"a photo of a horse in the mud" --prompt_tar="a photo of a horse in the snow"
+or 
+python3 main_run.py --mode="our_inv"
+```
 
+## p2p+our invserion
+```
+python3 main_run.py --mode="p2pinv"
+```
+Pay attention that you can play with the corss-and self-attention via --xa and --sa (which have default values of 0.6 and 0.2 respectively).
+
+## ddim inverion
+```
+python3 main_run.py --mode="ddim"
+```
+Skip is set to be 0.
+
+## p2p invserion
+```
+python3 main_run.py --mode="p2pddim"
+```
+--xa and --sa are set to be 0.8 and 0.4 as suggested in the original paper. Skip is set to be 0.
+
+
+We suggest to play with skip in the range [0,40] and cfg_tar in the range [7,18].
 ## Create Your Own Example
 
 ###  Train
