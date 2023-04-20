@@ -66,9 +66,13 @@ Pay attention that you can play with the corss-and self-attention via ```--xa```
 ```skip``` is set to be 0.
 
 ### Create Your Own Editing with Our Method
-(1) Copy the input image to example_images folder.
-(2) Add to the test.yaml the image with its source prompt and target prompts.
-(3) Run ``main_run.py --mode="our_inv"``, play with ``skip`` and ``cfg_tar``.
+(1) Add your image to example_images. <br?>
+(2) Run ``main_run.py --mode="our_inv"``, play with ``skip`` and ``cfg_tar``. <br>
+
+Example:
+```python3 main_run.py --skip=20 --cfg_tar=10 --img_name=gnochi_mirror --cfg_src='a cat is sitting next to a mirro --cfg_tar=a drwaing of a cat sitting next to a mirror'``` 
+
+Instead, you can edit the test.yaml file to load your image and get your prompts.
 
 <!-- ## Sources 
 
@@ -76,11 +80,8 @@ The DDPM code was adapted from the following [pytorch implementation of DDPM](ht
 
 The modified CLIP model as well as most of the code in `./text2live_util/` directory was taken from the [official Text2live repository](https://github.com/omerbt/Text2LIVE).  -->
  
-
-
 ### Citation
 If you use this code for your research, please cite our paper:
-
 ```
 @article{HubermanSpiegelglas2023,
   title      = {An Edit Friendly DDPM Noise Space: Inversion and Manipulations},
