@@ -12,7 +12,7 @@
 Our inversion can be used for text-based editing of real images, either by itself or in combination with other editing methods.
 Due to the stochastic manner of our method, we can generate diverse outputs, a feature that is not naturally available with methods relying on the DDIM inversion.
 
-In this repository we support in editing via our inversion, p2p+our inversion, ddim or p2p (with ddim inversion).
+In this repository we support editing using our inversion, p2p+our inversion, ddim or p2p (with ddim inversion).
 
 ## Table of Contents
 * [Requirements](#Requirements)
@@ -38,9 +38,18 @@ This code was tested with python 3.8 and torch 1.13.
 └── test.yaml - yaml file contains images and prompt to run
 ```
 
-A folder names 'results' will be automatically created and all the restuls will be saved to this folder, marked with a timestamp.
+A folder named 'results' will be automatically created and all the restuls will be saved to this folder, marked with a timestamp.
 
 ## Algorithm Inputs
+The parameters of the method are: 
+```
+skip - parametercontrolling the adherence to the input image
+cfg_tar - the strength of the classifierfree guidance
+```
+Moreover, in order to run the method needs an input image ('''img_name''') and source and target prompts ('''prompt_src''' and '''prompt_tar'''). These three parameters can be given also in the test.yaml file intead.
+
+All these parameters have default values.
+
 ```
 ├── cfg_tar - classifier free guidance
 ├── dataset_yaml - the yaml location contains input images locations, source and target prompts
