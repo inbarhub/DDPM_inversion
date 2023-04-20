@@ -9,10 +9,10 @@
 ### Official pytorch implementation of the paper: <br>"An Edit Friendly DDPM Noise Space: Inversion and Manipulations"
 
 ![](imgs/teaser.jpg)
-Our inversion can be used for text-based editing of **real images**, either by itself or in combination with other editing methods.
-Due to the stochastic manner of our method, we can generate diverse outputs, a feature that is not naturally available with methods relying on the DDIM inversion.
+Our inversion can be used for text-based **editing of real images**, either by itself or in combination with other editing methods.
+Due to the stochastic manner of our method, we can generate **diverse outputs**, a feature that is not naturally available with methods relying on the DDIM inversion.
 
-In this repository we support editing using our inversion, p2p+our inversion, ddim or p2p (with ddim inversion).
+In this repository we support editing using our inversion, [prompt-to-prompt (p2p)](https://github.com/google/prompt-to-prompt)+our inversion, ddim or [p2p](https://github.com/google/prompt-to-prompt) (with ddim inversion).
 
 ## Table of Contents
 * [Requirements](#Requirements)
