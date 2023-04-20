@@ -1,6 +1,6 @@
 <!-- [![DDPM inversion](https://img.shields.io/badge/single%20image-generative%20model-yellow)](https://github.com/topics/single-image-generation) -->
 [![Python 3.8](https://img.shields.io/badge/python-3.812+-blue)](https://www.python.org/downloads/release/python-38/)
-[![torch](https://img.shields.io/badge/torch-1.13.0+-green)](https://pytorch.org/)
+[![torch](https://img.shields.io/badge/torch-2.0.0+-green)](https://pytorch.org/)
 
 
 # DDPM_inversion
