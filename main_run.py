@@ -84,7 +84,7 @@ if __name__ == "__main__":
         # iterate over decoder prompts
         for k in range(len(prompt_tar_list)):
             prompt_tar = prompt_tar_list[k]
-            save_path = os.path.join(f'./results_{args.num_diffusion_steps}/', args.mode+xa_sa_string+str(time_stamp), image_path.split(sep='.')[0], 'src_' + prompt_src.replace(" ", "_"), 'dec_' + prompt_tar.replace(" ", "_"))
+            save_path = os.path.join(f'./results/', args.mode+xa_sa_string+str(time_stamp), image_path.split(sep='.')[0], 'src_' + prompt_src.replace(" ", "_"), 'dec_' + prompt_tar.replace(" ", "_"))
             os.makedirs(save_path, exist_ok=True)
 
             # Check if number of words in encoder and decoder text are equal

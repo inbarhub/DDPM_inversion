@@ -25,7 +25,7 @@ In this repository we support editing using our inversion, prompt-to-prompt (p2p
 ```
 python -m pip install -r requirements.txt
 ```
-This code was tested with python 3.8 and torch 1.13. 
+This code was tested with python 3.8 and torch 2.0.0. 
 
 ## Repository Structure 
 ```
@@ -36,17 +36,25 @@ This code was tested with python 3.8 and torch 1.13.
 └── test.yaml - yaml file contains images and prompt to run
 ```
 
-A folder named 'results' will be automatically created and all the restuls will be saved to this folder, marked with a timestamp.
+A folder named 'results' will be automatically created and all the restuls will be saved to this folder. We add a timestamp to the saved images in this folder.
 
-## Algorithm Inputs
-The parameters of the method are: 
+## Algorithm Inputs and parameters
+The Inputs are: 
+```
+img_name - the path to the input images
+prompt_src - a prompt descibing the input image
+prompt_tar - the edit prompt
+```
+These three inputs can be given either as input argument or via the test.yaml file .
+
+<br>
+The parametersare: 
 ```
 skip - controlling the adherence to the input image
 cfg_tar - the strength of the classifier free guidance
 ```
-Moreover, we should supply also an input image (```img_name```) and source and target prompts (```prompt_src``` and ```prompt_tar```). These three parameters can be given also in the test.yaml file.
 
-All parameters have default values.
+These two parameters have default values ((15,36) for ``skip,cfg_tar`` respectively), as descibe in the paper.
 
 ## Usage Examples 
 ```
