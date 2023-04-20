@@ -66,7 +66,7 @@ Pay attention that you can play with the corss-and self-attention via ```--xa```
 ```skip``` is set to be 0.
 
 ### Create Your Own Editing with Our Method
-(1) Add your image to example_images. <br?>
+(1) Add your image to example_images. <br>
 (2) Run ``main_run.py --mode="our_inv"``, play with ``skip`` and ``cfg_tar``. <br>
 
 Example:
