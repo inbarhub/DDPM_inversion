@@ -13,15 +13,18 @@ Our inversion can be used for text-based **editing of real images**, either by i
 Due to the stochastic manner of our method, we can generate **diverse outputs**, a feature that is not naturally available with methods relying on the DDIM inversion.
 
 In this repository we support editing using our inversion, prompt-to-prompt (p2p)+our inversion, ddim or [p2p](https://github.com/google/prompt-to-prompt) (with ddim inversion).<br>
-**our inversion**: our ddpm inversion following by generating an image with the target prompt 
-**prompt-to-prompt (p2p) +our inversion is**: p2p method using our ddpm inversion 
-**ddim**: ddim inversion following by generating an image with the target prompt 
-**pp2p**: p2p method using our ddim inversion (original paper)
+**our inversion**: our ddpm inversion followed by generating an image conditioned on the target prompt. 
+
+**prompt-to-prompt (p2p) + our inversion**: p2p method using our ddpm inversion. 
+
+**ddim**: ddim inversion followed by generating an image conditioned on the target prompt.
+
+**p2p**: p2p method using ddim inversion (original paper).
 
 ## Table of Contents
 * [Requirements](#Requirements)
 * [Repository Structure](#Repository-Structure)
-* [Usage Examples](#Usage-Examples)
+* [Usage Example](#Usage-Example)
 * [Citation](#Citation)
 
 ## Requirements 
@@ -33,7 +36,7 @@ This code was tested with python 3.8 and torch 2.0.0.
 
 ## Repository Structure 
 ```
-├── ddpm_inversion - folder contains inversions in order to work on real images: ddim inversion as well as ddom inversion (our method).
+├── ddm_inversion - folder contains inversions in order to work on real images: ddim inversion as well as ddpm inversion (our method).
 ├── example_images - folder of input images to be edited
 ├── imgs - images used in this repository readme.md file
 ├── prompt_to_prompt - p2p code
@@ -41,50 +44,50 @@ This code was tested with python 3.8 and torch 2.0.0.
 └── test.yaml - yaml file contains images and prompts to test on
 ```
 
-A folder named 'results' will be automatically created and all the restuls will be saved to this folder. We also add a timestamp to the saved images in this folder.
+A folder named 'results' will be automatically created and all the results will be saved to this folder. We also add a timestamp to the saved images in this folder.
 
 ## Algorithm Inputs and parameters
 Method's inputs: 
 ```
-img_name - the path to the input images
-prompt_src - a prompt describing the input image
-prompt_tar - the edit prompt
+init_img - the path to the input images
+source_prompt - a prompt describing the input image
+target_prompts - the edit prompt (creates several images if multiple prompts are given)
 ```
-These three inputs can be given either as input arguments or via the test.yaml file.
+These three inputs can be supplied through a YAML file (please use the provided 'test.yaml' file as a reference).
 
 <br>
-Method's parametersare: 
+Method's parameters are:
+
 ```
 skip - controlling the adherence to the input image
 cfg_tar - the strength of the classifier free guidance
 ```
+These two parameters have default values, as descibed in the paper.
 
-These two parameters have default values, as descibe in the paper.
-
-## Usage Examples 
+## Usage Example 
 ```
-python3 main_run.py --mode="XXX" --img_name="example_images/horse_mud.jpg" --prompt_src"a photo of a horse in the mud" --prompt_tar="a photo of a horse in the snow"
-or 
-python3 main_run.py --mode="XXX"
+python3 main_run.py --mode="XXX"  --dataset_yaml="test.yaml" --skip=20 --cfg_tar=10 
 ```
 Where XXX can be ```our_inv```,```p2pinv``` (p2p+our inversion),```ddim``` or ```p2p``` (original p2p paper).
 
-In ```our_inv``` and ```p2pinv``` modes we suggest to play with ```skip``` in the range [0,40] and ```cfg_tar``` in the range [7,18].
+In ```our_inv``` and ```p2pinv``` modes we suggest to play around with ```skip``` in the range [0,40] and ```cfg_tar``` in the range [7,18].
 
 **For p2pinv and p2p**:
-Pay attention that you can play with the corss-and self-attention via ```--xa``` and ```--sa``` arguments. We suggest to set them to (0.6,0.2) and (0.8,0.4) for p2pinv and p2p respectively.
+Note that you can play with the cross-and self-attention via ```--xa``` and ```--sa``` arguments. We suggest to set them to (0.6,0.2) and (0.8,0.4) for p2pinv and p2p respectively.
 
 **For ddim and p2p**:
-```skip``` is set to be 0.
+```skip``` is overwritten to be 0.
 
-### Create Your Own Editing with Our Method
-(1) Add your image to example_images. <br>
-(2) Run ``main_run.py --mode="our_inv"``, play with ``skip`` and ``cfg_tar``. <br>
+<!-- ## Create Your Own Editing with Our Method
+(1) Add your image to /example_images. <br>
+(2) Run ``main_run.py --mode="our_inv"``, choose ``skip`` and ``cfg_tar``. <br>
 
 Example:
-```python3 main_run.py --skip=20 --cfg_tar=10 --img_name=gnochi_mirror --cfg_src='a cat is sitting next to a mirro --cfg_tar=a drwaing of a cat sitting next to a mirror'``` 
+```
+python3 main_run.py --skip=20 --cfg_tar=10 --img_name=gnochi_mirror --cfg_src='a cat is sitting next to a mirror' --cfg_tar='a drawing of a cat sitting next to a mirror'
+```  -->
 
-Instead, you can edit the test.yaml file to load your image and get your prompts.
+You can edit the test.yaml file to load your image and choose the desired prompts.
 
 <!-- ## Sources 
 

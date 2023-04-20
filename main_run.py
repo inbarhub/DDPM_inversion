@@ -4,25 +4,22 @@ from diffusers import DDIMScheduler
 import os
 from prompt_to_prompt.ptp_classes import AttentionStore, AttentionReplace, AttentionRefine, EmptyControl,load_512
 from prompt_to_prompt.ptp_utils import register_attention_control, text2image_ldm_stable, view_images
-from ddpm_inversion.inversion_utils import  inversion_forward_process, inversion_reverse_process
-from ddpm_inversion.utils import image_grid,dataset_from_yaml
+from ddm_inversion.inversion_utils import  inversion_forward_process, inversion_reverse_process
+from ddm_inversion.utils import image_grid,dataset_from_yaml
 
 from torch import autocast, inference_mode
-from ddpm_inversion.ddim_inversion import ddim_inversion
+from ddm_inversion.ddim_inversion import ddim_inversion
 
 import calendar
 import time
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--device_num", type=int, default=2)
+    parser.add_argument("--device_num", type=int, default=0)
     parser.add_argument("--cfg_src", type=float, default=3.5)
     parser.add_argument("--cfg_tar", type=float, default=[15])
     parser.add_argument("--num_diffusion_steps", type=int, default=100)
-    parser.add_argument("--prompt_src",  default="a photo of a horse in the mud")
-    parser.add_argument("--prompt_tar",  default="a photo of a horse in the snow")
     parser.add_argument("--dataset_yaml",  default="test.yaml")
-    parser.add_argument("--img_name",  default="example_images/horse_mud.jpg")
     parser.add_argument("--eta", type=float, default=1)
     parser.add_argument("--mode",  default="our_inv", help="modes: our_inv,p2pinv,p2pddim, ddim")
     parser.add_argument("--skip",  type=int, default=[0])
