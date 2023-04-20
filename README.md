@@ -70,7 +70,7 @@ python3 main_run.py --mode="our_inv" --dataset_yaml="test.yaml" --skip=[36] --cf
 python3 main_run.py --mode="p2pinv" --dataset_yaml="test.yaml" --skip=[12] --cfg_tar=[9] 
 
 ```
-The mode argument can also be: ```ddim``` or ```p2p```.
+The ```mode``` argument can also be: ```ddim``` or ```p2p```.
 
 In ```our_inv``` and ```p2pinv``` modes we suggest to play around with ```skip``` in the range [0,40] and ```cfg_tar``` in the range [7,18].
 
