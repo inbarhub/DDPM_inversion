@@ -80,7 +80,7 @@ The DDPM code was adapted from the following [pytorch implementation of DDPM](ht
 
 The modified CLIP model as well as most of the code in `./text2live_util/` directory was taken from the [official Text2live repository](https://github.com/omerbt/Text2LIVE).  -->
  
-### Citation
+## Citation
 If you use this code for your research, please cite our paper:
 ```
 @article{HubermanSpiegelglas2023,
