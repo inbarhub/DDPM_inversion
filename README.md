@@ -18,7 +18,6 @@ In this repository we support editing using our inversion, prompt-to-prompt (p2p
 * [Requirements](#Requirements)
 * [Repository Structure](#Repository-Structure)
 * [Usage Examples](#Usage-Examples)
-<!-- * [Sources](#Sources) -->
 * [Citation](#Citation)
 
 ## Requirements 
