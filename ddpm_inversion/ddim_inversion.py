@@ -1,5 +1,4 @@
-# Based on xxxx
- 
+
 from prompt_to_prompt.inversion_utils import encode_text
 from typing import Union
 import torch

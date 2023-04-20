@@ -1,3 +1,9 @@
+"""
+This code was originally taken from
+https://github.com/google/prompt-to-prompt
+"""
+
+
 LOW_RESOURCE = True 
 MAX_NUM_WORDS = 77
 

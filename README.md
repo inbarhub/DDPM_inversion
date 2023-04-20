@@ -56,12 +56,13 @@ python3 main_run.py --mode="XXX" --img_name="example_images/horse_mud.jpg" --pro
 or 
 python3 main_run.py --mode="XXX"
 ```
-Where XXX can be ```our_inv```,```p2pinv``` (p2p+our imversion),```ddim``` or ```p2p``` (original p2p paper).
+Where XXX can be ```our_inv```,```p2pinv``` (p2p+our inversion),```ddim``` or ```p2p``` (original p2p paper).
 
-In ```our_inv``` and ```p2pinv``` We suggest to play with ```skip``` in the range [0,40] and ```cfg_tar``` in the range [7,18].
+In ```our_inv``` and ```p2pinv``` we suggest to play with ```skip``` in the range [0,40] and ```cfg_tar``` in the range [7,18].
 
 **For p2pinv and p2p**:
 Pay attention that you can play with the corss-and self-attention via ```--xa``` and ```--sa``` arguments. We suggest to set them to (0.6,0.2) and (0.8,0.4) for p2pinv and p2p respectively.
+
 **For ddim and p2p**:
 ```skip``` is set to be 0.
 

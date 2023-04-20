@@ -4,11 +4,11 @@ from diffusers import DDIMScheduler
 import os
 from prompt_to_prompt.ptp_classes import AttentionStore, AttentionReplace, AttentionRefine, EmptyControl,load_512
 from prompt_to_prompt.ptp_utils import register_attention_control, text2image_ldm_stable, view_images
-from prompt_to_prompt.inversion_utils import  inversion_forward_process, inversion_reverse_process
-from prompt_to_prompt.utils import image_grid,dataset_from_yaml
+from ddpm_inversion.inversion_utils import  inversion_forward_process, inversion_reverse_process
+from ddpm_inversion.utils import image_grid,dataset_from_yaml
 
 from torch import autocast, inference_mode
-from prompt_to_prompt.ddim_inversion import ddim_inversion
+from ddpm_inversion.ddim_inversion import ddim_inversion
 
 import calendar
 import time
