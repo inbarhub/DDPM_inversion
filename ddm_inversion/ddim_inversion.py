@@ -1,5 +1,5 @@
 
-from prompt_to_prompt.inversion_utils import encode_text
+from ddm_inversion.inversion_utils import encode_text
 from typing import Union
 import torch
 import numpy as np

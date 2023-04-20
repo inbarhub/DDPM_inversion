@@ -59,16 +59,18 @@ These three inputs are supplied through a YAML file (please use the provided 'te
 Method's parameters are:
 
 ```
-skip - controlling the adherence to the input image
-cfg_tar - the strength of the classifier free guidance
+skip - controlling the adherence to the input image; a list
+cfg_tar - classifier free guidance strengths; a list
 ```
 These two parameters have default values, as descibed in the paper.
 
 ## Usage Example 
 ```
-python3 main_run.py --mode="XXX" --dataset_yaml="test.yaml" --skip=36 --cfg_tar=15 
+python3 main_run.py --mode="our_inv" --dataset_yaml="test.yaml" --skip=[36] --cfg_tar=[15] 
+python3 main_run.py --mode="p2pinv" --dataset_yaml="test.yaml" --skip=[12] --cfg_tar=[9] 
+
 ```
-Where XXX can be ```our_inv```,```p2pinv``` ,```ddim``` or ```p2p```.
+The mode argument can also be: ```ddim``` or ```p2p```.
 
 In ```our_inv``` and ```p2pinv``` modes we suggest to play around with ```skip``` in the range [0,40] and ```cfg_tar``` in the range [7,18].
 

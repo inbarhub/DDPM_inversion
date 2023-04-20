@@ -3,7 +3,7 @@ import os
 from tqdm import tqdm
 
 def load_real_image(folder = "data/", img_name = None, idx = 0, img_size=512, device='cuda'):
-    from prompt_to_prompt.utils import pil_to_tensor
+    from ddm_inversion.utils import pil_to_tensor
     from PIL import Image
     from glob import glob
     if img_name is not None:
