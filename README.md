@@ -75,7 +75,7 @@ In ```our_inv``` and ```p2pinv``` modes we suggest to play around with ```skip``
 **p2pinv and p2p**:
 Note that you can play with the cross-and self-attention via ```--xa``` and ```--sa``` arguments. We suggest to set them to (0.6,0.2) and (0.8,0.4) for p2pinv and p2p respectively.
 
-**For ddim and p2p**:
+**ddim and p2p**:
 ```skip``` is overwritten to be 0.
 
 <!-- ## Create Your Own Editing with Our Method
