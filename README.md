@@ -9,7 +9,7 @@
 ### Official pytorch implementation of the paper: <br>"An Edit Friendly DDPM Noise Space: Inversion and Manipulations"
 
 ![](imgs/teaser.jpg)
-Our inversion can be used for text-based editing of real images, either by itself or in combination with other editing methods.
+Our inversion can be used for text-based editing of **real images**, either by itself or in combination with other editing methods.
 Due to the stochastic manner of our method, we can generate diverse outputs, a feature that is not naturally available with methods relying on the DDIM inversion.
 
 In this repository we support editing using our inversion, p2p+our inversion, ddim or p2p (with ddim inversion).
@@ -46,128 +46,30 @@ The parameters of the method are:
 skip - controlling the adherence to the input image
 cfg_tar - the strength of the classifier free guidance
 ```
-Moreover, we should supply also an input image (img_name) and source and target prompts (prompt_src and prompt_tar). These three parameters can be given also in the test.yaml file.
+Moreover, we should supply also an input image (```img_name```) and source and target prompts (```prompt_src``` and ```prompt_tar```). These three parameters can be given also in the test.yaml file.
 
 All parameters have default values.
 
 ## Usage Examples 
-## Our inversion
 ```
-python3 main_run.py --mode="our_inv" --img_name="example_images/horse_mud.jpg" --prompt_src"a photo of a horse in the mud" --prompt_tar="a photo of a horse in the snow"
+python3 main_run.py --mode="XXX" --img_name="example_images/horse_mud.jpg" --prompt_src"a photo of a horse in the mud" --prompt_tar="a photo of a horse in the snow"
 or 
-python3 main_run.py --mode="our_inv"
+python3 main_run.py --mode="XXX"
 ```
+Where XXX can be ```our_inv```,```p2pinv``` (p2p+our imversion),```ddim``` or ```p2p``` (original p2p paper).
 
-## p2p+our invserion
-```
-python3 main_run.py --mode="p2pinv"
-```
-Pay attention that you can play with the corss-and self-attention via --xa and --sa (which have default values of 0.6 and 0.2 respectively).
+In ```our_inv``` and ```p2pinv``` We suggest to play with ```skip``` in the range [0,40] and ```cfg_tar``` in the range [7,18].
 
-## ddim inverion
-```
-python3 main_run.py --mode="ddim"
-```
-Skip is set to be 0.
+**For p2pinv and p2p**:
+Pay attention that you can play with the corss-and self-attention via ```--xa``` and ```--sa``` arguments. We suggest to set them to (0.6,0.2) and (0.8,0.4) for p2pinv and p2p respectively.
+**For ddim and p2p**:
+```skip``` is set to be 0.
 
-## p2p invserion
-```
-python3 main_run.py --mode="p2pddim"
-```
---xa and --sa are set to be 0.8 and 0.4 as suggested in the original paper. Skip is set to be 0.
+## Create Your Own Editing with Our Method
+(1) Copy the input image to example_images folder.
+(2) Add to the test.yaml the image with its source prompt and target prompts.
+(3) Run ``main_run.py --mode="our_inv"``, play with ``skip`` and ``cfg_tar``.
 
-
-We suggest to play with skip in the range [0,40] and cfg_tar in the range [7,18].
-## Create Your Own Example
-
-###  Train
-To train a SinDDM model on your own image e.g. `<training_image.png>`, put the desired training image under `./datasets/<training_image>/`, and run
-
-```
-python main.py --scope <training_image> --mode train --dataset_folder ./datasets/<training_image>/ --image_name <training_image.png> --results_folder ./results/ 
-```
-
-This code will also generate random samples starting from the coarsest scale (s=0) of the trained model.
-
-###  Random sampling
-To generate random samples, please first train a SinDDM model on the desired image (as described above) or use a provided pretrained model, then run 
-
-```
-python main.py --scope <training_image> --mode sample --dataset_folder ./datasets/<training_image>/ --image_name <training_image.png> --results_folder ./results/ --load_milestone 12
-```
-To sample images in arbitrary sizes, one can add ```--scale_mul <y> <x>``` argument to generate an image that is `<y>` times as high and `<x>` times as wide as the original image.
- 
-<!-- ###  Random samples of arbitrary sizes 
-To generate random samples of arbitrary sizes, use the '--scale_mul h w' argument.
-For example, to generate an image with the width dimension 2 times larger run
-```
-python main.py --scope <training_image> --mode sample --dataset_folder ./datasets/<training_image>/ --image_name <training_image.png> --results_folder ./results/ --load_milestone 12 --scale_mul 1 2
-``` -->
-
-###  Text guided content generation
-
-To guide the generation to create new content using a given text prompt `<text_prompt>`, run 
-
-```
-python main.py --scope <training_image> --mode clip_content --clip_text <text_prompt> --strength <s> --fill_factor <f> --dataset_folder ./datasets/<training_image>/ --image_name <training_image.png> --results_folder ./results/ --load_milestone 12
-```
-Where **_strength_** and **_fill_factor_** are the required controllable parameters explained in the paper.
-
-###  Text guided style generation
-
-To guide the generation to create a new style for the image using a given text prompt `<style_prompt>`, run
-
-```
-python main.py --scope <training_image> --mode clip_style_gen --clip_text <style_prompt> --dataset_folder ./datasets/<training_image>/ --image_name <training_image.png> --results_folder ./results/ --load_milestone 12
-```
-**Note:** One can add the ```--scale_mul <y> <x>``` argument to generate an arbitrary size sample with the given style.
-
-###  Text guided style transfer
-
-To create a new style for a given image, without changing the original image global structure, run
-
-```
-python main.py --scope <training_image> --mode clip_style_trans --clip_text <text_style> --dataset_folder ./datasets/<training_image>/ --image_name <training_image.png> --results_folder ./results/ --load_milestone 12
-```
-
-###  Text guided ROI
-To modify an image in a specified ROI (Region Of Interest) with a given text prompt `<text_prompt>`, run
-
-```
-python main.py --scope <training_image> --mode clip_roi --clip_text <text_prompt> --strength <s> --fill_factor <f> --dataset_folder ./datasets/<training_image>/ --image_name <training_image.png> --results_folder ./results/ --load_milestone 12
-```
-**Note:** A Graphical prompt will open. The user need to select a ROI within the displayed image.
-
-###  ROI guided generation
-
-Here, the user can mark a specific training image ROI and choose where it should appear in the generated samples. If roi_n_tar is passed then the user will be able to choose several target locations.
-```
-python main.py --scope <training_image> --mode roi --roi_n_tar <n_targets> --dataset_folder ./datasets/<training_image>/ --image_name <training_image.png> --results_folder ./results/ --load_milestone 12
-```
-A graphical prompt will open and allow the user to choose a ROI from the training image. Then, the user need to choose where it should appear in the resulting samples.
-Here as well, one can generate an image with arbitrary shapes using ```--scale_mul <y> <x>```
-
-###  Harmonization
-
-To harmonize a pasted object into an image, place a naively pasted reference image and the selected mask into `./datasets/<training_image>/i2i/` and run
-
-```
-python main.py --scope <training_image> --mode harmonization --harm_mask <mask_name> --input_image <naively_pasted_image> --dataset_folder ./datasets/<training_image>/ --image_name <training_image.png> --results_folder ./results/ --load_milestone 12
-```
-
-###  Style Transfer
-
-To transfer the style of the training image to a content image, place the content image into `./datasets/<training_image>/i2i/` and run
-
-```
-python main.py --scope <training_image> --mode style_transfer --input_image <content_image> --dataset_folder ./datasets/<training_image>/ --image_name <training_image.png> --results_folder ./results/ --load_milestone 12
-```
-
-## Data and Pretrained Models
-We provide several pre-trained models for you to use under `./results/` directory. More models will be available soon.
- 
-We provide all the training images we used in our paper under the `./datasets/` directory. All the images we provide are in the dimensions we used for training and are in .png format. 
- 
 ## Sources 
 
 The DDPM code was adapted from the following [pytorch implementation of DDPM](https://github.com/lucidrains/denoising-diffusion-pytorch). 
