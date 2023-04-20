@@ -40,9 +40,23 @@ This code was tested with python 3.8 and torch 1.13.
 
 A folder names 'results' will be automatically created and all the restuls will be saved to this folder, marked with a timestamp.
 
-## Usage Examples 
-The test.yaml file contains images to be edited along with their source and targett prompts.
+## Algorithm Inputs
+```
+├── cfg_tar - classifier free guidance
+├── dataset_yaml - the yaml location contains input images locations, source and target prompts
+├── mode - 
+├── skip - 
+└── test.yaml - yaml file contains images and prompt to run
+```
+There are more variables, such as num_diffusion_steps which is the number of inference step that you can play with.
+All these inputs have default parameters in main_run.py. You can run with your own parameters, we can be seen next.
 
+## Usage Examples 
+## Our inversio
+The test.yaml file contains images to be edited along with their source prompt and target prompts. The main.py has default argument
+## p2p+our invserion
+
+## Create Your Own Example
 
 ###  Train
 To train a SinDDM model on your own image e.g. `<training_image.png>`, put the desired training image under `./datasets/<training_image>/`, and run

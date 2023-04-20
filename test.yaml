@@ -1,5 +1,5 @@
   -
-    init_img:  /example_image/horse_mud.jpg
+    init_img:  /example_images/horse_mud.jpg
     source_prompt: a photo of a horse in the mud
 
     target_prompts:

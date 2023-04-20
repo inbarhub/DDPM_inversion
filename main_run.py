@@ -22,7 +22,7 @@ if __name__ == "__main__":
     parser.add_argument("--prompt_src",  default="a photo of a horse in the mud")
     parser.add_argument("--prompt_tar",  default="a photo of a horse in the snow")
     parser.add_argument("--dataset_yaml",  default="test.yaml")
-    parser.add_argument("--img_name",  default="example_image/horse_mud.jpg")
+    parser.add_argument("--img_name",  default="example_images/horse_mud.jpg")
     parser.add_argument("--eta", type=float, default=1)
     parser.add_argument("--mode",  default="our_inv", help="modes: our_inv,p2pinv,p2pddim, ddim")
     parser.add_argument("--skip",  type=int, default=[0])
