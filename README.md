@@ -7,6 +7,8 @@
 
 [Project](https://inbarhub.github.io/DDPM_inversion/) | [Arxiv](https://arxiv.org/abs/2304.06140) | [Supplementary materials](https://inbarhub.github.io/DDPM_inversion/resources/inversion_supp.pdf)
 ### Official pytorch implementation of the paper: <br>"An Edit Friendly DDPM Noise Space: Inversion and Manipulations"
+#### Inbar Huberman-Spiegelglas, Vladimir Kulikov and Tomer Michaeli 
+
 
 ![](imgs/teaser.jpg)
 Our inversion can be used for text-based **editing of real images**, either by itself or in combination with other editing methods.
