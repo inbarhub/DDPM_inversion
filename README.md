@@ -12,14 +12,13 @@
 Our inversion can be used for text-based **editing of real images**, either by itself or in combination with other editing methods.
 Due to the stochastic manner of our method, we can generate **diverse outputs**, a feature that is not naturally available with methods relying on the DDIM inversion.
 
-In this repository we support editing using our inversion, [prompt-to-prompt (p2p)](https://github.com/google/prompt-to-prompt)+our inversion, ddim or [p2p](https://github.com/google/prompt-to-prompt) (with ddim inversion).
+In this repository we support editing using our inversion, prompt-to-prompt (p2p)+our inversion, ddim or [p2p](https://github.com/google/prompt-to-prompt) (with ddim inversion).
 
 ## Table of Contents
 * [Requirements](#Requirements)
 * [Repository Structure](#Repository-Structure)
 * [Usage Examples](#Usage-Examples)
-* [Data and Pretrained Models](#Data-and-Pretrained-Models)
-* [Sources](#Sources)
+<!-- * [Sources](#Sources) -->
 * [Citation](#Citation)
 
 ## Requirements 
@@ -66,16 +65,16 @@ Pay attention that you can play with the corss-and self-attention via ```--xa```
 **For ddim and p2p**:
 ```skip``` is set to be 0.
 
-## Create Your Own Editing with Our Method
+### Create Your Own Editing with Our Method
 (1) Copy the input image to example_images folder.
 (2) Add to the test.yaml the image with its source prompt and target prompts.
 (3) Run ``main_run.py --mode="our_inv"``, play with ``skip`` and ``cfg_tar``.
 
-## Sources 
+<!-- ## Sources 
 
 The DDPM code was adapted from the following [pytorch implementation of DDPM](https://github.com/lucidrains/denoising-diffusion-pytorch). 
 
-The modified CLIP model as well as most of the code in `./text2live_util/` directory was taken from the [official Text2live repository](https://github.com/omerbt/Text2LIVE). 
+The modified CLIP model as well as most of the code in `./text2live_util/` directory was taken from the [official Text2live repository](https://github.com/omerbt/Text2LIVE).  -->
  
 
 
