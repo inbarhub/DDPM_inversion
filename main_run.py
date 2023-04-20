@@ -146,11 +146,4 @@ if __name__ == "__main__":
                     save_full_path = os.path.join(save_path, image_name_png)
                     img.save(save_full_path)
 
-# TODO: Vova:
-# (1) requrement file
-# (2) where to put .gitignore
-# TODO: Inbar:
-# (1) fix Rene's bug
-# (2) write more concisly the inversion_util
-# (3) Comments
-# (4) change gpu=0
+
