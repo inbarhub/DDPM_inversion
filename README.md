@@ -53,7 +53,7 @@ init_img - the path to the input images
 source_prompt - a prompt describing the input image
 target_prompts - the edit prompt (creates several images if multiple prompts are given)
 ```
-These three inputs can be supplied through a YAML file (please use the provided 'test.yaml' file as a reference).
+These three inputs are supplied through a YAML file (please use the provided 'test.yaml' file as a reference).
 
 <br>
 Method's parameters are:
@@ -66,13 +66,13 @@ These two parameters have default values, as descibed in the paper.
 
 ## Usage Example 
 ```
-python3 main_run.py --mode="XXX"  --dataset_yaml="test.yaml" --skip=20 --cfg_tar=10 
+python3 main_run.py --mode="XXX" --dataset_yaml="test.yaml" --skip=36 --cfg_tar=15 
 ```
-Where XXX can be ```our_inv```,```p2pinv``` (p2p+our inversion),```ddim``` or ```p2p``` (original p2p paper).
+Where XXX can be ```our_inv```,```p2pinv``` ,```ddim``` or ```p2p```.
 
 In ```our_inv``` and ```p2pinv``` modes we suggest to play around with ```skip``` in the range [0,40] and ```cfg_tar``` in the range [7,18].
 
-**For p2pinv and p2p**:
+**p2pinv and p2p**:
 Note that you can play with the cross-and self-attention via ```--xa``` and ```--sa``` arguments. We suggest to set them to (0.6,0.2) and (0.8,0.4) for p2pinv and p2p respectively.
 
 **For ddim and p2p**:
