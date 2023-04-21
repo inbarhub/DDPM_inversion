@@ -17,7 +17,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--device_num", type=int, default=0)
     parser.add_argument("--cfg_src", type=float, default=3.5)
-    parser.add_argument("--cfg_tar", type=float, default=15, nergad='+')
+    parser.add_argument("--cfg_tar", type=float, default=15, nargs='+')
     parser.add_argument("--num_diffusion_steps", type=int, default=100)
     parser.add_argument("--dataset_yaml",  default="test.yaml")
     parser.add_argument("--eta", type=float, default=1)
