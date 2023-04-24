@@ -17,12 +17,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--device_num", type=int, default=0)
     parser.add_argument("--cfg_src", type=float, default=3.5)
-    parser.add_argument("--cfg_tar", type=float, default=[15], nargs='+')
+    parser.add_argument("--cfg_tar", type=float, default=15)
     parser.add_argument("--num_diffusion_steps", type=int, default=100)
     parser.add_argument("--dataset_yaml",  default="test.yaml")
     parser.add_argument("--eta", type=float, default=1)
     parser.add_argument("--mode",  default="our_inv", help="modes: our_inv,p2pinv,p2pddim,ddim")
-    parser.add_argument("--skip",  type=int, default=[36], nargs='+')
+    parser.add_argument("--skip",  type=int, default=36)
     parser.add_argument("--xa", type=float, default=0.6)
     parser.add_argument("--sa", type=float, default=0.2)
     
@@ -37,9 +37,9 @@ if __name__ == "__main__":
     device = f"cuda:{args.device_num}"
 
     cfg_scale_src = args.cfg_src
-    cfg_scale_tar_list = args.cfg_tar
+    cfg_scale_tar_list = [args.cfg_tar]
     eta = args.eta # = 1
-    skip_zs=args.skip
+    skip_zs = [args.skip]
     xa_sa_string = f'_xa_{args.xa}_sa{args.sa}_' if args.mode=='p2pinv' else '_'
 
     current_GMT = time.gmtime()
@@ -146,3 +146,7 @@ if __name__ == "__main__":
                     save_full_path = os.path.join(save_path, image_name_png)
                     img.save(save_full_path)
 
+# TODO: Inbar:
+# (1) fix Rene's bug
+# (2) write more concisly the inversion_util
+# (3) Comments
