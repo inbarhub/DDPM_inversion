@@ -17,12 +17,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--device_num", type=int, default=0)
     parser.add_argument("--cfg_src", type=float, default=3.5)
-    parser.add_argument("--cfg_tar", type=float, default=15, nargs='+')
+    parser.add_argument("--cfg_tar", type=float, default=[15], nargs='+')
     parser.add_argument("--num_diffusion_steps", type=int, default=100)
     parser.add_argument("--dataset_yaml",  default="test.yaml")
     parser.add_argument("--eta", type=float, default=1)
     parser.add_argument("--mode",  default="our_inv", help="modes: our_inv,p2pinv,p2pddim,ddim")
-    parser.add_argument("--skip",  type=int, default=36, nargs='+')
+    parser.add_argument("--skip",  type=int, default=[36], nargs='+')
     parser.add_argument("--xa", type=float, default=0.6)
     parser.add_argument("--sa", type=float, default=0.2)
     
@@ -45,6 +45,9 @@ if __name__ == "__main__":
     current_GMT = time.gmtime()
     time_stamp = calendar.timegm(current_GMT)
 
+    # load/reload model:
+    ldm_stable = StableDiffusionPipeline.from_pretrained(model_id).to(device)
+
     for i in range(len(full_data)):
         current_image_data = full_data[i]
         image_path = current_image_data['init_img']
@@ -52,9 +55,6 @@ if __name__ == "__main__":
         image_folder = image_path.split('/')[1] # after '.'
         prompt_src = current_image_data.get('source_prompt', "") # default empty string
         prompt_tar_list = current_image_data['target_prompts']
-
-        # load/reload model:
-        ldm_stable = StableDiffusionPipeline.from_pretrained(model_id).to(device)
 
         if args.mode=="p2pddim" or args.mode=="ddim":
             scheduler = DDIMScheduler(beta_start=0.00085, beta_end=0.012, beta_schedule="scaled_linear", clip_sample=False, set_alpha_to_one=False)
