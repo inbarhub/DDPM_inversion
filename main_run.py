@@ -21,7 +21,7 @@ if __name__ == "__main__":
     parser.add_argument("--num_diffusion_steps", type=int, default=100)
     parser.add_argument("--dataset_yaml",  default="test.yaml")
     parser.add_argument("--eta", type=float, default=1)
-    parser.add_argument("--mode",  default="p2pinv", help="modes: our_inv,p2pinv,p2pddim,ddim")
+    parser.add_argument("--mode",  default="our_inv", help="modes: our_inv,p2pinv,p2pddim,ddim")
     parser.add_argument("--skip",  type=int, default=36)
     parser.add_argument("--xa", type=float, default=0.6)
     parser.add_argument("--sa", type=float, default=0.2)
@@ -93,7 +93,7 @@ if __name__ == "__main__":
                         # reverse process (via Zs and wT)
                         controller = AttentionStore()
                         register_attention_control(ldm_stable, controller)
-                        w0, _ = inversion_reverse_process(ldm_stable, xT=wts[skip], etas=eta, prompts=[prompt_tar], cfg_scales=[cfg_scale_tar], prog_bar=True, zs=zs[skip:], controller=controller)
+                        w0, _ = inversion_reverse_process(ldm_stable, xT=wts[args.num_diffusion_steps-skip], etas=eta, prompts=[prompt_tar], cfg_scales=[cfg_scale_tar], prog_bar=True, zs=zs[:(args.num_diffusion_steps-skip)], controller=controller)
 
                     elif args.mode=="p2pinv":
                         # inversion with attention replace
@@ -106,7 +106,7 @@ if __name__ == "__main__":
                             controller = AttentionRefine(prompts, args.num_diffusion_steps, cross_replace_steps=args.xa, self_replace_steps=args.sa, model=ldm_stable)
 
                         register_attention_control(ldm_stable, controller)
-                        w0, _ = inversion_reverse_process(ldm_stable, xT=wts[skip], etas=eta, prompts=prompts, cfg_scales=cfg_scale_list, prog_bar=True, zs=zs[skip:], controller=controller)
+                        w0, _ = inversion_reverse_process(ldm_stable, xT=wts[args.num_diffusion_steps-skip], etas=eta, prompts=prompts, cfg_scales=cfg_scale_list, prog_bar=True, zs=zs[:(args.num_diffusion_steps-skip)], controller=controller)
                         w0 = w0[1].unsqueeze(0)
 
                     elif args.mode=="p2pddim" or args.mode=="ddim":
@@ -145,4 +145,3 @@ if __name__ == "__main__":
 
                     save_full_path = os.path.join(save_path, image_name_png)
                     img.save(save_full_path)
-
