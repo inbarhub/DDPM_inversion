@@ -46,13 +46,15 @@ def sample_xts_from_x0(model, x0, num_inference_steps=50):
     
     timesteps = model.scheduler.timesteps.to(model.device)
     t_to_idx = {int(v):k for k,v in enumerate(timesteps)}
-    xts = torch.zeros(variance_noise_shape).to(x0.device)
+    xts = torch.zeros((num_inference_steps+1,model.unet.in_channels, model.unet.sample_size, model.unet.sample_size)).to(x0.device)
+    xts[0] = x0
     for t in reversed(timesteps):
-        idx = t_to_idx[int(t)]
-        xts[idx] = x0 * (alpha_bar[t] ** 0.5) + torch.randn_like(x0) * sqrt_one_minus_alpha_bar[t]
-    xts = torch.cat([xts, x0 ],dim = 0)
+        idx = num_inference_steps-t_to_idx[int(t)]
+        xts[idx] = x0 * (alpha_bar[t] ** 0.5) +  torch.randn_like(x0) * sqrt_one_minus_alpha_bar[t]
+
 
     return xts
+
 
 def encode_text(model, prompts):
     text_input = model.tokenizer(
@@ -121,16 +123,18 @@ def inversion_forward_process(model, x0,
         xts = sample_xts_from_x0(model, x0, num_inference_steps=num_inference_steps)
         alpha_bar = model.scheduler.alphas_cumprod
         zs = torch.zeros(size=variance_noise_shape, device=model.device)
-        
     t_to_idx = {int(v):k for k,v in enumerate(timesteps)}
     xt = x0
-    op = tqdm(reversed(timesteps)) if prog_bar else reversed(timesteps)
+    # op = tqdm(reversed(timesteps)) if prog_bar else reversed(timesteps)
+    op = tqdm(timesteps) if prog_bar else timesteps
 
     for t in op:
-        idx = t_to_idx[int(t)]
+        # idx = t_to_idx[int(t)]
+        idx = num_inference_steps-t_to_idx[int(t)]-1
         # 1. predict noise residual
         if not eta_is_zero:
-            xt = xts[idx][None]
+            xt = xts[idx+1][None]
+            # xt = xts_cycle[idx+1][None]
                     
         with torch.no_grad():
             out = model.unet.forward(xt, timestep =  t, encoder_hidden_states = uncond_embedding)
@@ -142,13 +146,13 @@ def inversion_forward_process(model, x0,
             noise_pred = out.sample + cfg_scale * (cond_out.sample - out.sample)
         else:
             noise_pred = out.sample
-
         if eta_is_zero:
             # 2. compute more noisy image and set x_t -> x_t+1
             xt = forward_step(model, noise_pred, t, xt)
 
         else: 
-            xtm1 =  xts[idx+1][None]
+            # xtm1 =  xts[idx+1][None]
+            xtm1 =  xts[idx][None]
             # pred of x0
             pred_original_sample = (xt - (1-alpha_bar[t])  ** 0.5 * noise_pred ) / alpha_bar[t] ** 0.5
             
@@ -160,16 +164,16 @@ def inversion_forward_process(model, x0,
             pred_sample_direction = (1 - alpha_prod_t_prev - etas[idx] * variance ) ** (0.5) * noise_pred
 
             mu_xt = alpha_prod_t_prev ** (0.5) * pred_original_sample + pred_sample_direction
-            
+
             z = (xtm1 - mu_xt ) / ( etas[idx] * variance ** 0.5 )
             zs[idx] = z
 
             # correction to avoid error accumulation
             xtm1 = mu_xt + ( etas[idx] * variance ** 0.5 )*z
-            xts[idx+1] = xtm1
+            xts[idx] = xtm1
 
     if not zs is None: 
-        zs[-1] = torch.zeros_like(zs[-1]) 
+        zs[0] = torch.zeros_like(zs[0]) 
 
     return xt, zs, xts
 
@@ -233,7 +237,7 @@ def inversion_reverse_process(model,
     t_to_idx = {int(v):k for k,v in enumerate(timesteps[-zs.shape[0]:])}
 
     for t in op:
-        idx = t_to_idx[int(t)]        
+        idx = model.scheduler.num_inference_steps-t_to_idx[int(t)]-(model.scheduler.num_inference_steps-zs.shape[0]+1)    
         ## Unconditional embedding
         with torch.no_grad():
             uncond_out = model.unet.forward(xt, timestep =  t, 

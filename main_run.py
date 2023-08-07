@@ -93,7 +93,7 @@ if __name__ == "__main__":
                         # reverse process (via Zs and wT)
                         controller = AttentionStore()
                         register_attention_control(ldm_stable, controller)
-                        w0, _ = inversion_reverse_process(ldm_stable, xT=wts[skip], etas=eta, prompts=[prompt_tar], cfg_scales=[cfg_scale_tar], prog_bar=True, zs=zs[skip:], controller=controller)
+                        w0, _ = inversion_reverse_process(ldm_stable, xT=wts[args.num_diffusion_steps-skip], etas=eta, prompts=[prompt_tar], cfg_scales=[cfg_scale_tar], prog_bar=True, zs=zs[:(args.num_diffusion_steps-skip)], controller=controller)
 
                     elif args.mode=="p2pinv":
                         # inversion with attention replace
@@ -106,7 +106,7 @@ if __name__ == "__main__":
                             controller = AttentionRefine(prompts, args.num_diffusion_steps, cross_replace_steps=args.xa, self_replace_steps=args.sa, model=ldm_stable)
 
                         register_attention_control(ldm_stable, controller)
-                        w0, _ = inversion_reverse_process(ldm_stable, xT=wts[skip], etas=eta, prompts=prompts, cfg_scales=cfg_scale_list, prog_bar=True, zs=zs[skip:], controller=controller)
+                        w0, _ = inversion_reverse_process(ldm_stable, xT=wts[args.num_diffusion_steps-skip], etas=eta, prompts=prompts, cfg_scales=cfg_scale_list, prog_bar=True, zs=zs[:(args.num_diffusion_steps-skip)], controller=controller)
                         w0 = w0[1].unsqueeze(0)
 
                     elif args.mode=="p2pddim" or args.mode=="ddim":
@@ -145,4 +145,3 @@ if __name__ == "__main__":
 
                     save_full_path = os.path.join(save_path, image_name_png)
                     img.save(save_full_path)
-
