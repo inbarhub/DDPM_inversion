@@ -3,7 +3,7 @@
 [![torch](https://img.shields.io/badge/torch-2.0.0+-green)](https://pytorch.org/)
 
 
-# DDPM_inversion
+# DDPM inversion, CVPR 2024
 
 [Project page](https://inbarhub.github.io/DDPM_inversion/) | [Arxiv](https://arxiv.org/abs/2304.06140) | [Supplementary materials](https://inbarhub.github.io/DDPM_inversion/resources/inversion_supp.pdf) | [Hugging Face Demo](https://huggingface.co/spaces/LinoyTsaban/edit_friendly_ddpm_inversion)
 ### Official pytorch implementation of the paper: <br>"An Edit Friendly DDPM Noise Space: Inversion and Manipulations"
