@@ -103,6 +103,7 @@ The modified CLIP model as well as most of the code in `./text2live_util/` direc
  
 ## Citation
 If you use this code for your research, please cite our paper:
+```
 @inproceedings{huberman2024edit,
   title={An edit friendly {DDPM} noise space: Inversion and manipulations},
   author={Huberman-Spiegelglas, Inbar and Kulikov, Vladimir and Michaeli, Tomer},
@@ -110,3 +111,4 @@ If you use this code for your research, please cite our paper:
   pages={12469--12478},
   year={2024}
 }
+```
